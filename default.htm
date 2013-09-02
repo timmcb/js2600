@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>js2600</title>
+    <link rel="stylesheet" href="app.css" type="text/css" />
+    <script src="/2600/switch.js"></script>
+    <script src="/2600/port.js"></script>
+    <script src="/2600/joystick.js"></script>
+    <script src="/2600/sound.js"></script>
+    <script src="/2600/cart.js"></script>
+    <script src="/2600/adventure.js"></script>
+    <script src="/2600/riot.js"></script>
+    <script src="/2600/tia.js"></script>
+    <script src="/2600/disassembler.js"></script>
+    <script src="/2600/memory.js"></script>
+    <script src="/2600/processor.js"></script>
+    <!--<script src="/2600/ram.js"></script>-->
+    <!--<script src="/2600/timer.js"></script>-->
+    <!--<script src="/2600/assembler.js"></script>-->
+    <!--<script src="/2600/color.js"></script>-->
+    <!--<script src="/2600/console.js"></script>-->
+    <!--<script src="/2600/debugger.js"></script>-->
+    <!--<script src="/2600/log.js"></script>-->
+    <!--<script src="/2600/paddle.js"></script>-->
+    <script>
+        window.requestAnimFrame = (function () {
+            return window.requestAnimFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback, element) {
+                    window.setTimeout(callback, 1000.0 / 60.0);
+                };
+        })();
+
+        var cart = new F8Cart(Asteroids());
+
+        var processor = new m6507(cart);
+
+        function Run() {
+            window.requestAnimFrame(Run);
+            processor.ExecFrame();
+        }
+
+        window.onload = function () {
+            window.requestAnimFrame(Run);
+        };
+    </script>
+    <style>
+        .screen {
+            width: 800px;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>js2600 Test Page</h1>
+    <canvas id="screen" height="210" width="160" class="screen"></canvas>
+</body>
+</html>
