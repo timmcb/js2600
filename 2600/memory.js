@@ -1,3 +1,7 @@
+/// <reference>port.ts</reference>
+/// <reference>joystick.ts</reference>
+/// <reference>cart.ts</reference>
+/// <reference>riot.ts</reference>
 function GetCart(gameid) {
     var ct = new Cart(ColorBar());
 
@@ -59,38 +63,40 @@ function GetCart(gameid) {
 // 0xA000 0xBFFF 8K  0x0000-0x1FFF mirror
 // 0xC000 0xDFFF 8K  0x0000-0x1FFF mirror
 // 0xE000 0xFFFF 8K  0x0000-0x1FFF mirror
-function Memory(theCart) {
-    this.Port1 = new Port();
-    this.Port2 = new Port();
-    this.joy1 = new Joystick();
-    this.joy1.Init();
-    this.Port1.Connect(this.joy1);
+var Memory = (function () {
+    function Memory(theCart) {
+        this.Port1 = new Port();
+        this.Port2 = new Port();
+        this.joy1 = new Joystick();
+        this.joy1.Init();
+        this.Port1.Connect(this.joy1);
 
-    //this.Port2.Connect(this.joy1);
-    this.tia = new TIA(this.Port1, this.Port2);
-    this.tia.Init();
-    this.riot = new Riot(this.Port1, this.Port2);
-    this.riot.Init();
-    this.cart = theCart;
-}
-
-Memory.prototype.ReadByte = function (address) {
-    if (address & 0x1000) {
-        return this.cart.ReadByte(address);
-    } else if (address & 0x80) {
-        return this.riot.ReadByte(address);
-    } else {
-        return this.tia.ReadByte(address);
+        //this.Port2.Connect(this.joy1);
+        this.tia = new TIA(this.Port1, this.Port2);
+        this.tia.Init();
+        this.riot = new Riot(this.Port1, this.Port2);
+        this.riot.Init();
+        this.cart = theCart;
     }
-};
+    Memory.prototype.ReadByte = function (address) {
+        if (address & 0x1000) {
+            return this.cart.ReadByte(address);
+        } else if (address & 0x80) {
+            return this.riot.ReadByte(address);
+        } else {
+            return this.tia.ReadByte(address);
+        }
+    };
 
-Memory.prototype.WriteByte = function (address, value) {
-    if (address & 0x1000) {
-        this.cart.WriteByte(address, value);
-    } else if (address & 0x80) {
-        this.riot.WriteByte(address, value);
-    } else {
-        this.tia.WriteByte(address, value);
-    }
-};
+    Memory.prototype.WriteByte = function (address, value) {
+        if (address & 0x1000) {
+            this.cart.WriteByte(address, value);
+        } else if (address & 0x80) {
+            this.riot.WriteByte(address, value);
+        } else {
+            this.tia.WriteByte(address, value);
+        }
+    };
+    return Memory;
+})();
 //# sourceMappingURL=memory.js.map

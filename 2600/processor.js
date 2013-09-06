@@ -48,7 +48,7 @@ m6507.prototype.FlagsToString = function () {
     return str;
 };
 
-m6507.prototype.RegisterstoString = function () {
+m6507.prototype.RegistersToString = function () {
     var str = "A:" + this.A.toString(16);
     str = str + " X:" + this.X.toString(16);
     str = str + " Y:" + this.Y.toString(16);
@@ -398,7 +398,7 @@ m6507.prototype.Execute = function () {
 m6507.prototype.FetchInstruction = function () {
     this.ExecutionReader.Address = this.PC;
     this.Instruction = this.Disassembler.Disassemble(this.ExecutionReader);
-    //var disassembly = this.Instruction.toString();
+    //console.log(this.Instruction.toString());
 };
 
 m6507.prototype.ExecuteInstruction = function () {
@@ -414,6 +414,8 @@ m6507.prototype.ExecFrame = function () {
     while (this.Cycles < frameCycles) {
         this.ExecutionReader.Address = this.PC;
         this.Instruction = this.Disassembler.Disassemble(this.ExecutionReader);
+
+        //console.log(this.Instruction.toString() + "    " + this.RegistersToString() + "    " + this.FlagsToString());
         this.PC += this.Instruction.Bytes;
         this.AddressMode = this.AddressingModes[this.Instruction.AddressingMode];
         this.InstructionCycles = this.Instruction.Cycles;

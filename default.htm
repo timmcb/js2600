@@ -3,18 +3,17 @@
 <head>
     <meta charset="utf-8" />
     <title>js2600</title>
-    <link rel="stylesheet" href="app.css" type="text/css" />
-    <script src="/2600/switch.js"></script>
-    <script src="/2600/port.js"></script>
-    <script src="/2600/joystick.js"></script>
-    <script src="/2600/sound.js"></script>
-    <script src="/2600/cart.js"></script>
-    <script src="/2600/adventure.js"></script>
-    <script src="/2600/riot.js"></script>
-    <script src="/2600/tia.js"></script>
-    <script src="/2600/disassembler.js"></script>
-    <script src="/2600/memory.js"></script>
-    <script src="/2600/processor.js"></script>
+    <script src="2600/switch.js"></script>
+    <script src="2600/port.js"></script>
+    <script src="2600/joystick.js"></script>
+    <script src="2600/sound.js"></script>
+    <script src="2600/cart.js"></script>
+    <script src="2600/adventure.js"></script>
+    <script src="2600/riot.js"></script>
+    <script src="2600/tia.js"></script>
+    <script src="2600/disassembler.js"></script>
+    <script src="2600/memory.js"></script>
+    <script src="2600/processor.js"></script>
     <!--<script src="/2600/ram.js"></script>-->
     <!--<script src="/2600/timer.js"></script>-->
     <!--<script src="/2600/assembler.js"></script>-->
@@ -35,7 +34,17 @@
                 };
         })();
 
-        var cart = new F8Cart(Asteroids());
+        //var cart = new Cart2K(Combat());
+        //var cart = new Cart(Adventure());
+        //var cart = new F8Cart(Asteroids());
+        //var cart = new F8Cart(MsPacMan());
+        var cart = new F8SuperChipCart(Defender2());
+        //var cart = new Cart(Superman());
+        //var cart = new Cart(MissleCommand());
+        //var cart = new Cart(ColorBar());
+        //var cart = new Cart(DonkeyKong());
+        //var cart = new Cart(SpaceInvaders());
+        //var cart = new F8Cart(Battlezone());
 
         var processor = new m6507(cart);
 

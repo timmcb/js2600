@@ -11,29 +11,31 @@ Pin Port 0   Port 1   Joystick  Paddle       Keypad
 8   ground   ground   ground    ground       ground
 9   INPT1.7  INPT3.7  unused    RightPaddle  MiddleColumn
 */
-function Port() {
-    this.Device = null;
-}
-
-Port.prototype.Connect = function (device) {
-    this.Device = device;
-};
-
-Port.prototype.Disconnect = function () {
-    this.Device = null;
-};
-
-Port.prototype.WritePins = function (pins) {
-    if (this.Device) {
-        this.Device.WritePins(pins);
+var Port = (function () {
+    function Port() {
+        this.Device = null;
     }
-};
+    Port.prototype.Connect = function (device) {
+        this.Device = device;
+    };
 
-Port.prototype.ReadPins = function () {
-    if (this.Device) {
-        return this.Device.ReadPins();
-    } else {
-        return 0x1FF;
-    }
-};
+    Port.prototype.Disconnect = function () {
+        this.Device = null;
+    };
+
+    Port.prototype.WritePins = function (pins) {
+        if (this.Device) {
+            this.Device.WritePins(pins);
+        }
+    };
+
+    Port.prototype.ReadPins = function () {
+        if (this.Device) {
+            return this.Device.ReadPins();
+        } else {
+            return 0x1FF;
+        }
+    };
+    return Port;
+})();
 //# sourceMappingURL=port.js.map

@@ -12,30 +12,34 @@ Pin Port 0   Port 1   Joystick  Paddle       Keypad
 9   INPT1.7  INPT3.7  unused    RightPaddle  MiddleColumn   
 */
 
+class Port {
 
-function Port() {
-    this.Device = null;
-}
+    public Device: any;
 
-Port.prototype.Connect = function(device) {
-    this.Device = device;
-}
-
-Port.prototype.Disconnect = function() {
-    this.Device = null;
-}
-
-Port.prototype.WritePins = function(pins) {
-    if (this.Device) {
-        this.Device.WritePins(pins);
+    constructor() {
+        this.Device = null;
     }
-}
 
-Port.prototype.ReadPins = function() {
-    if (this.Device) {
-        return this.Device.ReadPins();
+    public Connect(device) {
+        this.Device = device;
     }
-    else {
-        return 0x1FF;
+
+    public Disconnect(): void {
+        this.Device = null;
+    }
+
+    public WritePins(pins: number) {
+        if (this.Device) {
+            this.Device.WritePins(pins);
+        }
+    }
+
+    public ReadPins(): number {
+        if (this.Device) {
+            return this.Device.ReadPins();
+        }
+        else {
+            return 0x1FF;
+        }
     }
 }

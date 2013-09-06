@@ -1,8 +1,11 @@
-function RGB(value) {
-    this.R = (value >>> 16) & 0xFF;
-    this.G = (value >>> 8) & 0xFF;
-    this.B = value & 0xFF;
-}
+var RGB = (function () {
+    function RGB(value) {
+        this.R = (value >>> 16) & 0xFF;
+        this.G = (value >>> 8) & 0xFF;
+        this.B = value & 0xFF;
+    }
+    return RGB;
+})();
 
 function TIA(port1, port2) {
     this.Port1 = port1;

@@ -1,8 +1,13 @@
+class RGB {
+    public R: number;
+    public G: number;
+    public B: number;
 
-function RGB(value) {
-    this.R = (value >>> 16) & 0xFF;
-    this.G = (value >>> 8) & 0xFF;
-    this.B = value & 0xFF;
+    constructor(value: number) {
+        this.R = (value >>> 16) & 0xFF;
+        this.G = (value >>> 8) & 0xFF;
+        this.B = value & 0xFF;
+    }
 }
 
 function TIA(port1, port2) {
