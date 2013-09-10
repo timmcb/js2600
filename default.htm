@@ -22,50 +22,85 @@
     <!--<script src="/2600/debugger.js"></script>-->
     <!--<script src="/2600/log.js"></script>-->
     <!--<script src="/2600/paddle.js"></script>-->
-    <script>
-        window.requestAnimFrame = (function () {
-            return window.requestAnimFrame ||
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                window.oRequestAnimationFrame ||
-                window.msRequestAnimationFrame ||
-                function (callback, element) {
-                    window.setTimeout(callback, 1000.0 / 60.0);
-                };
-        })();
 
-        //var cart = new Cart2K(Combat());
-        //var cart = new Cart(Adventure());
-        //var cart = new F8Cart(Asteroids());
-        //var cart = new F8Cart(MsPacMan());
-        var cart = new F8SuperChipCart(Defender2());
-        //var cart = new Cart(Superman());
-        //var cart = new Cart(MissleCommand());
-        //var cart = new Cart(ColorBar());
-        //var cart = new Cart(DonkeyKong());
-        //var cart = new Cart(SpaceInvaders());
-        //var cart = new F8Cart(Battlezone());
-
-        var processor = new m6507(cart);
-
-        function Run() {
-            window.requestAnimFrame(Run);
-            processor.ExecFrame();
-        }
-
-        window.onload = function () {
-            window.requestAnimFrame(Run);
-        };
-    </script>
     <style>
         .screen {
             width: 800px;
             height: 600px;
         }
+        #anim {
+            display: inline-block;
+            background-color: blueviolet;
+        }
+        #rate {
+            display: inline-block;
+            background-color: lime;
+        }
     </style>
 </head>
 <body>
     <h1>js2600 Test Page</h1>
+    <div>
+        anim: <div id="anim"></div>
+    </div>
+    <div>
+        rate: <div id="rate"></div>
+    </div>
     <canvas id="screen" height="210" width="160" class="screen"></canvas>
+        <script>
+            window.requestAnimFrame = (function () {
+                return window.requestAnimFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    window.oRequestAnimationFrame ||
+                    window.msRequestAnimationFrame ||
+                    function (callback, element) {
+                        window.setTimeout(callback, 1000.0 / 60.0);
+                    };
+            })();
+
+            //var cart = new Cart2K(Combat());
+            //var cart = new Cart(Adventure());
+            //var cart = new F8Cart(Asteroids());
+            //var cart = new F8Cart(MsPacMan());
+            //var cart = new F8SuperChipCart(Defender2());
+            //var cart = new Cart(Superman());
+            var cart = new Cart(MissleCommand());
+            //var cart = new Cart(ColorBar());
+            //var cart = new Cart(DonkeyKong());
+            //var cart = new Cart(SpaceInvaders());
+            //var cart = new F8Cart(Battlezone());
+
+            var processor = new m6507(cart);
+            var last, cur;
+            var animElem, rateElem;
+
+            function Run() {
+                window.requestAnimFrame(Run);
+                cur = Date.now();
+                var span = cur - last;
+                var rate = (1000 / span);
+                animElem.textContent = rate.toFixed(1);
+                //animElem.style.width = (rate * 10).toFixed(0) + "px";
+
+                if (span > 32) {
+                    processor.ExecFrame();
+                } else {
+                    processor.ExecTime(span);
+                }
+                rate = ((Date.now() - cur) / span) * 100;
+                rateElem.textContent = rate.toFixed(1);
+                //rateElem.style.width = Math.min(rate * 10, 600).toFixed(0) + "px";
+
+                last = cur;
+            }
+
+            window.onload = function () {
+                animElem = document.getElementById("anim");
+                rateElem = document.getElementById("rate");
+                last = Date.now();
+                Run();
+            };
+    </script>
 </body>
 </html>

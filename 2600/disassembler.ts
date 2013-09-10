@@ -1,61 +1,61 @@
-var Mnemonic = {
-    UND:  0, // UND undefined
-    ADC:  1, // ADC add with carryA
-    AND:  2, // AND and (with accumulator) 
-    ASL:  3, // ASL arithmetic shift left 
-    BCC:  4, // BCC branch on carry clear 
-    BCS:  5, // BCS branch on carry set 
-    BEQ:  6, // BEQ branch on equal (zero set) 
-    BIT:  7, // BIT bit test 
-    BMI:  8, // BMI branch on minus (negative set) 
-    BNE:  9, // BNE branch on not equal (zero clear) 
-    BPL: 10, // BPL branch on plus (negative clear) 
-    BRK: 11, // BRK interrupt 
-    BVC: 12, // BVC branch on overflow clear 
-    BVS: 13, // BVS branch on overflow set 
-    CLC: 14, // CLC clear carry
-    CLD: 15, // CLD clear decimal
-    CLI: 16, // CLI clear interrupt disable
-    CLV: 17, // CLV clear overflow 
-    CMP: 18, // CMP compare (with accumulator)
-    CPX: 19, // CPX compare with X 
-    CPY: 20, // CPY compare with Y 
-    DEC: 21, // DEC decrement 
-    DEX: 22, // DEX decrement X
-    DEY: 23, // DEY decrement Y 
-    EOR: 24, // EOR exclusive or (with accumulator)
-    INC: 25, // INC increment
-    INX: 26, // INX increment X
-    INY: 27, // INY increment Y 
-    JMP: 28, // JMP jump
-    JSR: 29, // JSR jump subroutine 
-    LDA: 30, // LDA load accumulator
-    LDX: 31, // LDX load X
-    LDY: 32, // LDY load Y 
-    LSR: 33, // LSR logical shift right
-    NOP: 34, // NOP no operation 
-    ORA: 35, // ORA or with accumulator 
-    PHA: 36, // PHA push accumulator 
-    PHP: 37, // PHP push processor status (SR) 
-    PLA: 38, // PLA pull accumulator 
-    PLP: 39, // PLP pull processor status (SR) 
-    ROL: 40, // ROL rotate left
-    ROR: 41, // ROR rotate right 
-    RTI: 42, // RTI return from interrupt 
-    RTS: 43, // RTS return from subroutine 
-    SBC: 44, // SBC subtract with carry
-    SEC: 45, // SEC set carry
-    SED: 46, // SED set decimal
-    SEI: 47, // SEI set interrupt disable
-    STA: 48, // STA store accumulator
-    STX: 49, // STX store X
-    STY: 50, // STY store Y
-    TAX: 51, // TAX transfer accumulator to X 
-    TAY: 52, // TAY transfer accumulator to Y 
-    TSX: 53, // TSX transfer stack pointer to X 
-    TXA: 54, // TXA transfer X to accumulator 
-    TXS: 55, // TXS transfer X to stack pointer 
-    TYA: 56  // TYA transfer Y to accumulator 
+enum Mnemonic  {
+    UND=  0, // UND undefined
+    ADC=  1, // ADC add with carryA
+    AND=  2, // AND and (with accumulator) 
+    ASL=  3, // ASL arithmetic shift left 
+    BCC=  4, // BCC branch on carry clear 
+    BCS=  5, // BCS branch on carry set 
+    BEQ=  6, // BEQ branch on equal (zero set) 
+    BIT=  7, // BIT bit test 
+    BMI=  8, // BMI branch on minus (negative set) 
+    BNE=  9, // BNE branch on not equal (zero clear) 
+    BPL= 10, // BPL branch on plus (negative clear) 
+    BRK= 11, // BRK interrupt 
+    BVC= 12, // BVC branch on overflow clear 
+    BVS= 13, // BVS branch on overflow set 
+    CLC= 14, // CLC clear carry
+    CLD= 15, // CLD clear decimal
+    CLI= 16, // CLI clear interrupt disable
+    CLV= 17, // CLV clear overflow 
+    CMP= 18, // CMP compare (with accumulator)
+    CPX= 19, // CPX compare with X 
+    CPY= 20, // CPY compare with Y 
+    DEC= 21, // DEC decrement 
+    DEX= 22, // DEX decrement X
+    DEY= 23, // DEY decrement Y 
+    EOR= 24, // EOR exclusive or (with accumulator)
+    INC= 25, // INC increment
+    INX= 26, // INX increment X
+    INY= 27, // INY increment Y 
+    JMP= 28, // JMP jump
+    JSR= 29, // JSR jump subroutine 
+    LDA= 30, // LDA load accumulator
+    LDX= 31, // LDX load X
+    LDY= 32, // LDY load Y 
+    LSR= 33, // LSR logical shift right
+    NOP= 34, // NOP no operation 
+    ORA= 35, // ORA or with accumulator 
+    PHA= 36, // PHA push accumulator 
+    PHP= 37, // PHP push processor status (SR) 
+    PLA= 38, // PLA pull accumulator 
+    PLP= 39, // PLP pull processor status (SR) 
+    ROL= 40, // ROL rotate left
+    ROR= 41, // ROR rotate right 
+    RTI= 42, // RTI return from interrupt 
+    RTS= 43, // RTS return from subroutine 
+    SBC= 44, // SBC subtract with carry
+    SEC= 45, // SEC set carry
+    SED= 46, // SED set decimal
+    SEI= 47, // SEI set interrupt disable
+    STA= 48, // STA store accumulator
+    STX= 49, // STX store X
+    STY= 50, // STY store Y
+    TAX= 51, // TAX transfer accumulator to X 
+    TAY= 52, // TAY transfer accumulator to Y 
+    TSX= 53, // TSX transfer stack pointer to X 
+    TXA= 54, // TXA transfer X to accumulator 
+    TXS= 55, // TXS transfer X to stack pointer 
+    TYA= 56  // TYA transfer Y to accumulator 
 }
 
 var MnemonicString = [
@@ -118,39 +118,39 @@ var MnemonicString = [
     "TYA"  // TYA transfer Y to accumulator 
 ]
 
-var AddressingMode = {
-    Implied     : 0,
-    Absolute    : 1,
-    AbsoluteX   : 2,
-    AbsoluteY   : 3,
-    Accumulator : 4,
-    Immediate   : 5,
-    Indirect    : 6,
-    IndirectX   : 7,
-    IndirectY   : 8,
-    Relative    : 9,
-    ZeroPage    : 10,
-    ZeroPageX   : 11,
-    ZeroPageY   : 12
+enum AddressingMode {
+    Implied     = 0,
+    Absolute    = 1,
+    AbsoluteX   = 2,
+    AbsoluteY   = 3,
+    Accumulator = 4,
+    Immediate   = 5,
+    Indirect    = 6,
+    IndirectX   = 7,
+    IndirectY   = 8,
+    Relative    = 9,
+    ZeroPage    = 10,
+    ZeroPageX   = 11,
+    ZeroPageY   = 12
 }
 
-var DisassemblyFormat = {
-    Default       : 0x1F,
-    Address       : 0x01,
-    ByteCodes     : 0x02,
-    Mnemonic      : 0x04,
-    BranchAddress : 0x08,
-    Label         : 0x10,
-    Decimal       : 0x20,
-    AllHex        : 0x0F,
-    AllDecimal    : 0x2F
+enum DisassemblyFormat  {
+    Default       = 0x1F,
+    Address       = 0x01,
+    ByteCodes     = 0x02,
+    Mnemonic      = 0x04,
+    BranchAddress = 0x08,
+    Label         = 0x10,
+    Decimal       = 0x20,
+    AllHex        = 0x0F,
+    AllDecimal    = 0x2F
 }
 
-var RW = {
-    None       : 0,
-    Read       : 1,
-    Write      : 2,
-    ReadWrite  : 3
+enum RW {
+    None       = 0,
+    Read       = 1,
+    Write      = 2,
+    ReadWrite  = 3
 }
 
 function Instruction(operation, mnemonic, addressingMode, bytes, cycles, pageCycles, branchCycles, rw) {

@@ -9,37 +9,14 @@ Ram.prototype.Init = function () {
 };
 
 Ram.prototype.ReadByte = function (address) {
-    var index = address & 0x7F;
-    var value = this.mem[index];
+    var index = address & 0x7F, value = this.mem[index];
 
-    /*
-    var vx = "";
-    if(address === 0x83) {
-    vx = value.toString(16);
-    var b = 0;
-    }
-    else if(address === 0x84) {
-    vx = value.toString(16);
-    var b = 0;
-    }
-    */
     return value;
 };
 
 Ram.prototype.WriteByte = function (address, value) {
     var index = address & 0x7F;
     this.mem[index] = value;
-    /*
-    var vx = "";
-    if(address === 0x83) {
-    vx = value.toString(16);
-    var b = 0;
-    }
-    else if(address === 0x84) {
-    vx = value.toString(16);
-    var b = 0;
-    }
-    */
 };
 
 Ram.prototype.toString = function () {

@@ -1,62 +1,63 @@
-var Mnemonic = {
-    UND: 0,
-    ADC: 1,
-    AND: 2,
-    ASL: 3,
-    BCC: 4,
-    BCS: 5,
-    BEQ: 6,
-    BIT: 7,
-    BMI: 8,
-    BNE: 9,
-    BPL: 10,
-    BRK: 11,
-    BVC: 12,
-    BVS: 13,
-    CLC: 14,
-    CLD: 15,
-    CLI: 16,
-    CLV: 17,
-    CMP: 18,
-    CPX: 19,
-    CPY: 20,
-    DEC: 21,
-    DEX: 22,
-    DEY: 23,
-    EOR: 24,
-    INC: 25,
-    INX: 26,
-    INY: 27,
-    JMP: 28,
-    JSR: 29,
-    LDA: 30,
-    LDX: 31,
-    LDY: 32,
-    LSR: 33,
-    NOP: 34,
-    ORA: 35,
-    PHA: 36,
-    PHP: 37,
-    PLA: 38,
-    PLP: 39,
-    ROL: 40,
-    ROR: 41,
-    RTI: 42,
-    RTS: 43,
-    SBC: 44,
-    SEC: 45,
-    SED: 46,
-    SEI: 47,
-    STA: 48,
-    STX: 49,
-    STY: 50,
-    TAX: 51,
-    TAY: 52,
-    TSX: 53,
-    TXA: 54,
-    TXS: 55,
-    TYA: 56
-};
+var Mnemonic;
+(function (Mnemonic) {
+    Mnemonic[Mnemonic["UND"] = 0] = "UND";
+    Mnemonic[Mnemonic["ADC"] = 1] = "ADC";
+    Mnemonic[Mnemonic["AND"] = 2] = "AND";
+    Mnemonic[Mnemonic["ASL"] = 3] = "ASL";
+    Mnemonic[Mnemonic["BCC"] = 4] = "BCC";
+    Mnemonic[Mnemonic["BCS"] = 5] = "BCS";
+    Mnemonic[Mnemonic["BEQ"] = 6] = "BEQ";
+    Mnemonic[Mnemonic["BIT"] = 7] = "BIT";
+    Mnemonic[Mnemonic["BMI"] = 8] = "BMI";
+    Mnemonic[Mnemonic["BNE"] = 9] = "BNE";
+    Mnemonic[Mnemonic["BPL"] = 10] = "BPL";
+    Mnemonic[Mnemonic["BRK"] = 11] = "BRK";
+    Mnemonic[Mnemonic["BVC"] = 12] = "BVC";
+    Mnemonic[Mnemonic["BVS"] = 13] = "BVS";
+    Mnemonic[Mnemonic["CLC"] = 14] = "CLC";
+    Mnemonic[Mnemonic["CLD"] = 15] = "CLD";
+    Mnemonic[Mnemonic["CLI"] = 16] = "CLI";
+    Mnemonic[Mnemonic["CLV"] = 17] = "CLV";
+    Mnemonic[Mnemonic["CMP"] = 18] = "CMP";
+    Mnemonic[Mnemonic["CPX"] = 19] = "CPX";
+    Mnemonic[Mnemonic["CPY"] = 20] = "CPY";
+    Mnemonic[Mnemonic["DEC"] = 21] = "DEC";
+    Mnemonic[Mnemonic["DEX"] = 22] = "DEX";
+    Mnemonic[Mnemonic["DEY"] = 23] = "DEY";
+    Mnemonic[Mnemonic["EOR"] = 24] = "EOR";
+    Mnemonic[Mnemonic["INC"] = 25] = "INC";
+    Mnemonic[Mnemonic["INX"] = 26] = "INX";
+    Mnemonic[Mnemonic["INY"] = 27] = "INY";
+    Mnemonic[Mnemonic["JMP"] = 28] = "JMP";
+    Mnemonic[Mnemonic["JSR"] = 29] = "JSR";
+    Mnemonic[Mnemonic["LDA"] = 30] = "LDA";
+    Mnemonic[Mnemonic["LDX"] = 31] = "LDX";
+    Mnemonic[Mnemonic["LDY"] = 32] = "LDY";
+    Mnemonic[Mnemonic["LSR"] = 33] = "LSR";
+    Mnemonic[Mnemonic["NOP"] = 34] = "NOP";
+    Mnemonic[Mnemonic["ORA"] = 35] = "ORA";
+    Mnemonic[Mnemonic["PHA"] = 36] = "PHA";
+    Mnemonic[Mnemonic["PHP"] = 37] = "PHP";
+    Mnemonic[Mnemonic["PLA"] = 38] = "PLA";
+    Mnemonic[Mnemonic["PLP"] = 39] = "PLP";
+    Mnemonic[Mnemonic["ROL"] = 40] = "ROL";
+    Mnemonic[Mnemonic["ROR"] = 41] = "ROR";
+    Mnemonic[Mnemonic["RTI"] = 42] = "RTI";
+    Mnemonic[Mnemonic["RTS"] = 43] = "RTS";
+    Mnemonic[Mnemonic["SBC"] = 44] = "SBC";
+    Mnemonic[Mnemonic["SEC"] = 45] = "SEC";
+    Mnemonic[Mnemonic["SED"] = 46] = "SED";
+    Mnemonic[Mnemonic["SEI"] = 47] = "SEI";
+    Mnemonic[Mnemonic["STA"] = 48] = "STA";
+    Mnemonic[Mnemonic["STX"] = 49] = "STX";
+    Mnemonic[Mnemonic["STY"] = 50] = "STY";
+    Mnemonic[Mnemonic["TAX"] = 51] = "TAX";
+    Mnemonic[Mnemonic["TAY"] = 52] = "TAY";
+    Mnemonic[Mnemonic["TSX"] = 53] = "TSX";
+    Mnemonic[Mnemonic["TXA"] = 54] = "TXA";
+    Mnemonic[Mnemonic["TXS"] = 55] = "TXS";
+    Mnemonic[Mnemonic["TYA"] = 56] = "TYA";
+})(Mnemonic || (Mnemonic = {}));
 
 var MnemonicString = [
     "UND",
@@ -118,40 +119,43 @@ var MnemonicString = [
     "TYA"
 ];
 
-var AddressingMode = {
-    Implied: 0,
-    Absolute: 1,
-    AbsoluteX: 2,
-    AbsoluteY: 3,
-    Accumulator: 4,
-    Immediate: 5,
-    Indirect: 6,
-    IndirectX: 7,
-    IndirectY: 8,
-    Relative: 9,
-    ZeroPage: 10,
-    ZeroPageX: 11,
-    ZeroPageY: 12
-};
+var AddressingMode;
+(function (AddressingMode) {
+    AddressingMode[AddressingMode["Implied"] = 0] = "Implied";
+    AddressingMode[AddressingMode["Absolute"] = 1] = "Absolute";
+    AddressingMode[AddressingMode["AbsoluteX"] = 2] = "AbsoluteX";
+    AddressingMode[AddressingMode["AbsoluteY"] = 3] = "AbsoluteY";
+    AddressingMode[AddressingMode["Accumulator"] = 4] = "Accumulator";
+    AddressingMode[AddressingMode["Immediate"] = 5] = "Immediate";
+    AddressingMode[AddressingMode["Indirect"] = 6] = "Indirect";
+    AddressingMode[AddressingMode["IndirectX"] = 7] = "IndirectX";
+    AddressingMode[AddressingMode["IndirectY"] = 8] = "IndirectY";
+    AddressingMode[AddressingMode["Relative"] = 9] = "Relative";
+    AddressingMode[AddressingMode["ZeroPage"] = 10] = "ZeroPage";
+    AddressingMode[AddressingMode["ZeroPageX"] = 11] = "ZeroPageX";
+    AddressingMode[AddressingMode["ZeroPageY"] = 12] = "ZeroPageY";
+})(AddressingMode || (AddressingMode = {}));
 
-var DisassemblyFormat = {
-    Default: 0x1F,
-    Address: 0x01,
-    ByteCodes: 0x02,
-    Mnemonic: 0x04,
-    BranchAddress: 0x08,
-    Label: 0x10,
-    Decimal: 0x20,
-    AllHex: 0x0F,
-    AllDecimal: 0x2F
-};
+var DisassemblyFormat;
+(function (DisassemblyFormat) {
+    DisassemblyFormat[DisassemblyFormat["Default"] = 0x1F] = "Default";
+    DisassemblyFormat[DisassemblyFormat["Address"] = 0x01] = "Address";
+    DisassemblyFormat[DisassemblyFormat["ByteCodes"] = 0x02] = "ByteCodes";
+    DisassemblyFormat[DisassemblyFormat["Mnemonic"] = 0x04] = "Mnemonic";
+    DisassemblyFormat[DisassemblyFormat["BranchAddress"] = 0x08] = "BranchAddress";
+    DisassemblyFormat[DisassemblyFormat["Label"] = 0x10] = "Label";
+    DisassemblyFormat[DisassemblyFormat["Decimal"] = 0x20] = "Decimal";
+    DisassemblyFormat[DisassemblyFormat["AllHex"] = 0x0F] = "AllHex";
+    DisassemblyFormat[DisassemblyFormat["AllDecimal"] = 0x2F] = "AllDecimal";
+})(DisassemblyFormat || (DisassemblyFormat = {}));
 
-var RW = {
-    None: 0,
-    Read: 1,
-    Write: 2,
-    ReadWrite: 3
-};
+var RW;
+(function (RW) {
+    RW[RW["None"] = 0] = "None";
+    RW[RW["Read"] = 1] = "Read";
+    RW[RW["Write"] = 2] = "Write";
+    RW[RW["ReadWrite"] = 3] = "ReadWrite";
+})(RW || (RW = {}));
 
 function Instruction(operation, mnemonic, addressingMode, bytes, cycles, pageCycles, branchCycles, rw) {
     this.Operation = operation;

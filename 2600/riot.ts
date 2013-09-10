@@ -142,7 +142,9 @@ class Riot {
             ddra: number = this.SWACNT,
             output: number = this.SWCHA & ddra,
             input: number = (portin & (~ddra)) & 0xFF;
+
         value = output | input;
+
         return value;
     }
 
@@ -155,7 +157,9 @@ class Riot {
             ddrb: number = this.SWBCNT,
             output: number = this.SWCHB & ddrb,
             input: number = (this.switchBank.ReadByte(address) & (~ddrb)) & 0xFF;
+
         value = output | input;
+
         return value;
     }
 
@@ -259,16 +263,16 @@ class Riot {
                 this.bcounter = 0x100;
             }
         }
-        if (this.bcounter > 0) {
-            //if (this.bcounter > cycles) {
-            //    this.bcounter -= cycles;
-            //    this.INTIM = this.bcounter;
-            //}
-            //else {
+        if (cycles > 0 && this.bcounter > 0) {
+            if (this.bcounter > cycles) {
+                this.bcounter -= cycles;
+                this.INTIM = this.bcounter;
+            }
+            else {
                 //cycles -= this.bcounter;
                 this.bcounter = 0;
                 this.INTIM = 0;
-            //}
+            }
         }
     }
 

@@ -110,7 +110,9 @@ var Riot = (function () {
     */
     Riot.prototype.ReadSWCHA = function (address) {
         var value, pins1 = this.Port1.ReadPins() & 0x00F, pins2 = this.Port2.ReadPins() & 0x00F, portin = (pins1 << 4) | pins2, ddra = this.SWACNT, output = this.SWCHA & ddra, input = (portin & (~ddra)) & 0xFF;
+
         value = output | input;
+
         return value;
     };
 
@@ -120,7 +122,9 @@ var Riot = (function () {
 
     Riot.prototype.ReadSWCHB = function (address) {
         var value, ddrb = this.SWBCNT, output = this.SWCHB & ddrb, input = (this.switchBank.ReadByte(address) & (~ddrb)) & 0xFF;
+
         value = output | input;
+
         return value;
     };
 
@@ -223,16 +227,15 @@ var Riot = (function () {
                 this.bcounter = 0x100;
             }
         }
-        if (this.bcounter > 0) {
-            //if (this.bcounter > cycles) {
-            //    this.bcounter -= cycles;
-            //    this.INTIM = this.bcounter;
-            //}
-            //else {
-            //cycles -= this.bcounter;
-            this.bcounter = 0;
-            this.INTIM = 0;
-            //}
+        if (cycles > 0 && this.bcounter > 0) {
+            if (this.bcounter > cycles) {
+                this.bcounter -= cycles;
+                this.INTIM = this.bcounter;
+            } else {
+                //cycles -= this.bcounter;
+                this.bcounter = 0;
+                this.INTIM = 0;
+            }
         }
     };
 
