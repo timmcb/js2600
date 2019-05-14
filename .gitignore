@@ -1,4 +1,6 @@
 *.suo
 *.user
+*.js
+*.js.map
 [Bb]in/
 [Oo]bj/
