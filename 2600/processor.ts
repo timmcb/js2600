@@ -518,7 +518,7 @@ class m6507 {
 
     public ExecTime(milliseconds: number): void {
         // 1194 cycles per millisecond
-        this.ExecCycles(milliseconds * 1194)
+        this.ExecCycles(milliseconds * 1194);
     }
 
     public UpdateCycles(cycles: number): void {

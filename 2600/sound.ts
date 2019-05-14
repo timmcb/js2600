@@ -204,7 +204,7 @@ function ToneGenerator(context, buffers) {
     this.context = context;
     this.buffers = buffers;
     if (this.context) {
-        this.gainNode = this.context.createGainNode();
+        this.gainNode = this.context.createGain();
         this.gainNode.gain.value = 0;
         this.gainNode.connect(this.context.destination);
         this.bufferSource = null;
@@ -234,7 +234,7 @@ ToneGenerator.prototype.play = function (sound, frequency, volume) {
             this.bufferSource.playbackRate.value = 1.0;
             this.bufferSource.playbackRate.value = (1.0 / (frequency + 1));
             this.bufferSource.connect(this.gainNode);
-            this.bufferSource.noteOn(0);
+            this.bufferSource.start(0);
         }
 
         this.sound = sound;
@@ -246,7 +246,7 @@ ToneGenerator.prototype.play = function (sound, frequency, volume) {
 ToneGenerator.prototype.stop = function () {
     if (this.context) {
         if (this.bufferSource) {
-            this.bufferSource.noteOff(0);
+            this.bufferSource.stop(0);
             this.bufferSource = null;
         }
     }

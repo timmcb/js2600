@@ -637,6 +637,7 @@ class TIA {
                 if (screen) {
                     this.Context = screen.getContext("2d");
                     //this.Context.imageSmoothingEnabled = false;
+                    //this.Context.msImageSmoothingEnabled = false;
                     //this.Context.webkitImageSmoothingEnabled = false;
                     //this.Context.scale(4, 3);
                     this.Image = this.Context.getImageData(0, 0, screen.width, screen.height);
