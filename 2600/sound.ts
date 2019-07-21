@@ -155,8 +155,8 @@ export class Sound {
         if (typeof AudioContext === "function") {
             this.context = new AudioContext();
         }
-        else if (typeof webkitAudioContext === "function") {
-            this.context = new webkitAudioContext();
+        else if (typeof (<any>window).webkitAudioContext === "function") {
+            this.context = new (<any>window).webkitAudioContext();
         }
 
         var buffers = new Array();

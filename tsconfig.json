@@ -3,7 +3,9 @@
         "target": "ES5",
         "module": "amd",
         "noImplicitAny": true,
-        "sourceMap": true
+        "sourceMap": false,
+        "outFile": "js2600.js",
+        
     },
     "include": [
         "**/*"

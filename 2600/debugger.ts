@@ -1,3 +1,5 @@
+import { Memory } from "memory";
+
 export interface Processor {
      // Registers
      PC: number;  // Program Counter

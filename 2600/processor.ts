@@ -1,5 +1,7 @@
-/// <reference>Dissasembler.ts</reference>
-/// <reference>Memory.ts</reference>
+import { Disassembler, Kind } from "disassembler";
+import { Processor } from "debugger";
+import { Memory } from "memory";
+import { Cart } from "cart";
 
 export interface AddressMode {
     GetValue?: () => number;

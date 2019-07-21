@@ -3,25 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <title>js2600</title>
-    <script src="2600/switch.js"></script>
-    <script src="2600/port.js"></script>
-    <script src="2600/joystick.js"></script>
-    <script src="2600/sound.js"></script>
-    <script src="2600/cart.js"></script>
-    <script src="2600/adventure.js"></script>
-    <script src="2600/riot.js"></script>
-    <script src="2600/tia.js"></script>
-    <script src="2600/disassembler.js"></script>
-    <script src="2600/memory.js"></script>
-    <script src="2600/processor.js"></script>
-    <!--<script src="/2600/ram.js"></script>-->
-    <!--<script src="/2600/timer.js"></script>-->
-    <!--<script src="/2600/assembler.js"></script>-->
-    <!--<script src="/2600/color.js"></script>-->
-    <!--<script src="/2600/console.js"></script>-->
-    <!--<script src="/2600/debugger.js"></script>-->
-    <!--<script src="/2600/log.js"></script>-->
-    <!--<script src="/2600/paddle.js"></script>-->
+    <script src="require.js"></script>
+    <script src="js2600.js"></script>
 
     <style>
         .screen {
@@ -67,55 +50,55 @@
                     };
             })();
 
-            //var cart = new Cart2K(Combat());
-            //var cart = new Cart(Adventure());
-            //var cart = new F8Cart(Asteroids());
-            //var cart = new F8Cart(MsPacMan());
-            var cart = new F8SuperChipCart(Defender2());
-            //var cart = new Cart(Superman());
-            //var cart = new Cart(MissleCommand());
-            //var cart = new Cart(ColorBar());
-            //var cart = new Cart(DonkeyKong());
-            //var cart = new Cart(SpaceInvaders());
-            //var cart = new F8Cart(Battlezone());
+            require(["cart", "processor", "adventure"], function (Cart, Processor, Games) {
+                //var cart = new Cart.Cart2K(Games.Combat());
+                //var cart = new Cart.Cart(Games.Adventure());
+                //var cart = new Cart.F8Cart(Games.Asteroids());
+                //var cart = new Cart.F8Cart(Games.MsPacMan());
+                var cart = new Cart.F8SuperChipCart(Games.Defender2());
+                //var cart = new Cart.Cart(Games.Superman());
+                //var cart = new Cart.Cart(Games.MissleCommand());
+                //var cart = new Cart.Cart(Games.ColorBar());
+                //var cart = new Cart.Cart(Games.DonkeyKong());
+                //var cart = new Cart.Cart(Games.SpaceInvaders());
+                //var cart = new Cart.F8Cart(Games.Battlezone());
 
-            //var cart = new AutoCart(Combat());
-            //var cart = new AutoCart(Adventure());
-            //var cart = new AutoCart(Asteroids());
-            //var cart = new AutoCart(MsPacMan());
-            //var cart = new AutoCart(Defender2());
-            //var cart = new AutoCart(Superman());
-            //var cart = new AutoCart(MissleCommand());
-            //var cart = new AutoCart(ColorBar());
-            //var cart = new AutoCart(DonkeyKong());
-            //var cart = new AutoCart(SpaceInvaders());
-            //var cart = new AutoCart(Battlezone());
+                //var cart = new Cart.AutoCart(Games.Combat());
+                //var cart = new Cart.AutoCart(Games.Adventure());
+                //var cart = new Cart.AutoCart(Games.Asteroids());
+                //var cart = new Cart.AutoCart(Games.MsPacMan());
+                //var cart = new Cart.AutoCart(Games.Defender2());
+                //var cart = new Cart.AutoCart(Games.Superman());
+                //var cart = new Cart.AutoCart(Games.MissleCommand());
+                //var cart = new Cart.AutoCart(Games.ColorBar());
+                //var cart = new Cart.AutoCart(Games.DonkeyKong());
+                //var cart = new Cart.AutoCart(Games.SpaceInvaders());
+                //var cart = new Cart.AutoCart(Games.Battlezone());
 
-            var processor = new m6507(cart);
-            var last, cur;
-            var animElem, rateElem;
+                var processor = new Processor.m6507(cart);
+                var last, cur;
+                var animElem, rateElem;
 
-            function Run() {
-                requestAnimationFrame(Run);
-                cur = Date.now();
-                var span = cur - last;
-                var rate = (1000 / span);
-                animElem.textContent = rate.toFixed(1);
-                //animElem.style.width = (rate * 10).toFixed(0) + "px";
+                function Run() {
+                    requestAnimationFrame(Run);
+                    cur = Date.now();
+                    var span = cur - last;
+                    var rate = (1000 / span);
+                    animElem.textContent = rate.toFixed(1);
+                    //animElem.style.width = (rate * 10).toFixed(0) + "px";
 
-                if (span > 32) {
-                    processor.ExecFrame();
-                } else {
-                    processor.ExecTime(span);
+                    if (span > 32) {
+                        processor.ExecFrame();
+                    } else {
+                        processor.ExecTime(span);
+                    }
+                    rate = ((Date.now() - cur) / span) * 100;
+                    rateElem.textContent = rate.toFixed(1);
+                    //rateElem.style.width = Math.min(rate * 10, 600).toFixed(0) + "px";
+
+                    last = cur;
                 }
-                rate = ((Date.now() - cur) / span) * 100;
-                rateElem.textContent = rate.toFixed(1);
-                //rateElem.style.width = Math.min(rate * 10, 600).toFixed(0) + "px";
 
-                last = cur;
-            }
-
-            window.onload = function () {
                 var filePicker = document.getElementById("filePicker");
                 filePicker.addEventListener('change', function (changeEvt) {
                     var file = filePicker.files[0];
@@ -129,10 +112,10 @@
                         });
 
                          var data = new Uint8Array(reader.result);
-                        //cart = new Cart(data);
-                         cart = new AutoCart(data);
-                        // cart = new E0Cart(data);
-                         processor = new m6507(cart);
+                        //cart = new Cart.Cart(data);
+                         cart = new Cart.AutoCart(data);
+                        // cart = new Cart.E0Cart(data);
+                         processor = new Processor.m6507(cart);
                          Run();
                     };
                     reader.readAsArrayBuffer(file); 
@@ -142,7 +125,8 @@
                 rateElem = document.getElementById("rate");
                 xlast = Date.now();
                 Run();
-            };
+ 
+            });
     </script>
 </body>
 </html>

@@ -1,6 +1,9 @@
 import * as Cart from "Cart";
 import * as Games from "Adventure";
 import { Joystick } from "Joystick";
+import { Port } from "port";
+import { Riot } from "riot";
+import { TIA } from "tia";
 
 export function GetCart(gameid: number)
 {
@@ -65,7 +68,7 @@ export function GetCart(gameid: number)
 // 0xA000 0xBFFF 8K  0x0000-0x1FFF mirror
 // 0xC000 0xDFFF 8K  0x0000-0x1FFF mirror
 // 0xE000 0xFFFF 8K  0x0000-0x1FFF mirror 
-class Memory {
+export class Memory {
     public Port1: Port;
     public Port2: Port;
     public joy1: Joystick;

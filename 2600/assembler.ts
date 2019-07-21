@@ -1,4 +1,4 @@
-
+/*
 export function AssemblyTokenizerFile(file) {
     this.File = file;
     this.Position = 0;
@@ -388,3 +388,4 @@ export function Assembler() {
         
     }
 }
+*/

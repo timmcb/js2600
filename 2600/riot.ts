@@ -1,5 +1,5 @@
 import { Port } from "Port";
-/// <reference>switch.ts</reference>
+import { Switch } from "Switch";
 
 export class Riot {
     public Port1: Port;
