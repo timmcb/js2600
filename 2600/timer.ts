@@ -1,4 +1,4 @@
-class Timer {
+export class Timer {
     public INTIM: number;
     public INSTAT: number;
     public TIM1T: number;
@@ -38,14 +38,13 @@ class Timer {
                 this.INSTAT = 0xC0;
                 this.bcounter = 0x100;
             }
-        }
-        if (this.bcounter > 0) {
+        } else if (this.bcounter > 0) {
             this.bcounter--;
             this.INTIM = this.bcounter;
         }
     }
 
-    public ReadByte(address) {
+    public ReadByte(address: number) {
         var value: number = 0,
             index: number = address & 0x7F;
 
@@ -91,6 +90,7 @@ class Timer {
                 this.INSTAT = 0;
                 this.shift = 0;
                 this.counter = (value << this.shift) | 0x0;
+                this.bcounter = 0;
                 break;
             case 0x15:
                 this.TIM8T = value;
@@ -98,6 +98,7 @@ class Timer {
                 this.INSTAT = 0;
                 this.shift = 3;
                 this.counter = value << 3 | 0x7;
+                this.bcounter = 0;
                 break;
             case 0x16:
                 this.TIM64T = value;
@@ -105,6 +106,7 @@ class Timer {
                 this.INSTAT = 0;
                 this.shift = 6;
                 this.counter = (value << this.shift) | 0x3F;
+                this.bcounter = 0;
                 break;
             case 0x17:
                 this.T1024T = value;
@@ -112,6 +114,7 @@ class Timer {
                 this.INSTAT = 0;
                 this.shift = 10;
                 this.counter = (value << this.shift) | 0x3FF;
+                this.bcounter = 0;
                 break;
             default:
                 break;

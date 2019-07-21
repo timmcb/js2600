@@ -1,17 +1,22 @@
 /// <reference>Dissasembler.ts</reference>
 /// <reference>Memory.ts</reference>
 
-interface AddressMode {
+export interface AddressMode {
     GetValue?: () => number;
     SetValue?: (value: number) => void;
     GetAddress?: () => number;
 }
 
-function MemoryReader(processor) {
-    this.Processor = processor;
-    this.Address = processor.PC;
+export class MemoryReader {
+    private readonly Processor: Processor;
+    public Address: number;
 
-    this.ReadByte = function () {
+    constructor (processor: Processor) {
+        this.Processor = processor;
+        this.Address = processor.PC;
+    }
+
+    public ReadByte(): number {
         var b = this.Processor.memory.ReadByte(this.Address);
         this.Address = (this.Address + 1) & 0xFFFF;
         return b;
@@ -19,19 +24,22 @@ function MemoryReader(processor) {
 }
 
 // Implied Addressing Mode
-class Implied implements AddressMode {
-    private Processor;
+export class Implied implements AddressMode {
+    private Processor: Processor;
+    public GetValue: () => number;
+    public SetValue: (value: number) => void;
+    public GetAddress: () => number;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 }
 
 // Absolute Addressing Mode
-class Absolute implements AddressMode {
-    private Processor;
+export class Absolute implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -55,10 +63,10 @@ class Absolute implements AddressMode {
 }
 
 // AbsoluteX Addressing Mode
-class AbsoluteX implements AddressMode {
-    private Processor;
+export class AbsoluteX implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -78,10 +86,10 @@ class AbsoluteX implements AddressMode {
 }
 
 // AbsoluteY Addressing Mode
-class AbsoluteY implements AddressMode {
-    private Processor;
+export class AbsoluteY implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -101,10 +109,10 @@ class AbsoluteY implements AddressMode {
 }
 
 // Accumulator Addressing Mode
-class Accumulator implements AddressMode {
-    private Processor;
+export class Accumulator implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -118,10 +126,10 @@ class Accumulator implements AddressMode {
 }
 
 // Immediate Addressing Mode
-class Immediate implements AddressMode {
-    private Processor;
+export class Immediate implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -132,10 +140,10 @@ class Immediate implements AddressMode {
 }
 
 // Indirect Addressing Mode
-class Indirect implements AddressMode {
-    private Processor;
+export class Indirect implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -159,10 +167,10 @@ class Indirect implements AddressMode {
 }
     
 // IndirectX Addressing Mode
-class IndirectX implements AddressMode {
-    private Processor;
+export class IndirectX implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -182,10 +190,10 @@ class IndirectX implements AddressMode {
 }
     
 // IndirectY Addressing Mode
-class IndirectY implements AddressMode {
-    private Processor;
+export class IndirectY implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -205,10 +213,10 @@ class IndirectY implements AddressMode {
 }
 
 // Relative Addressing Mode,
-class Relative implements AddressMode {
-    private Processor;
+export class Relative implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -220,10 +228,10 @@ class Relative implements AddressMode {
 }
 
 // ZeroPage Addressing Mode
-class ZeroPage implements AddressMode {
-    private Processor;
+export class ZeroPage implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -241,10 +249,10 @@ class ZeroPage implements AddressMode {
 }
 
 // ZeroPageX Addressing Mode
-class ZeroPageX implements AddressMode {
-    private Processor;
+export class ZeroPageX implements AddressMode {
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -264,10 +272,10 @@ class ZeroPageX implements AddressMode {
 }
 
 // ZeroPageY Addressing Mode
-class ZeroPageY implements AddressMode{
-    private Processor;
+export class ZeroPageY implements AddressMode{
+    private Processor: Processor;
 
-    constructor(processor) {
+    constructor(processor: Processor) {
         this.Processor = processor;
     }
 
@@ -286,13 +294,13 @@ class ZeroPageY implements AddressMode{
     }
 }
 
-class m6507 {
+export class m6507 implements Processor {
     // Registers
-    private PC: number;  // Program Counter
-    private S: number;   // Stack Pointer
-    private A: number;   // Acumulator
-    private X: number;   // Index Register X
-    private Y: number;   // Index Register Y
+    public PC: number;  // Program Counter
+    public S: number;   // Stack Pointer
+    public A: number;   // Acumulator
+    public X: number;   // Index Register X
+    public Y: number;   // Index Register Y
 
     // Status register flags
     private N: number;   // Negative Flag
@@ -304,8 +312,8 @@ class m6507 {
     private Z: number;   // Zero Flag
     private C: number;   // Carry Flag
 
-    private memory: Memory;
-    private Instruction: any;
+    public memory: Memory;
+    public Instruction: any;
     private Cycles: number;
     private InstructionCycles: number;
     private Disassembler: any;
@@ -316,10 +324,11 @@ class m6507 {
     private Instructions: { (): void; }[];
     private AddressingModes: AddressMode[];
     private AddressMode: AddressMode;
+    public beforeExecute: () => void;
 
-    constructor(theCart) {
+    constructor(theCart: Cart) {
         this.PC = 0;             // Program Counter
-        this.S = 0xFF;           // Stack Pointer
+        this.S = 0xFD;           // Stack Pointer
         this.A = 0;              // Acumulator
         this.X = 0;              // Index Register X
         this.Y = 0;              // Index Register Y
@@ -478,6 +487,10 @@ class m6507 {
         return str;
     }
 
+    public Step(): void {
+        this.Execute();
+    }
+
     public Execute(): void {
         this.FetchInstruction();
         this.ExecuteInstruction();
@@ -493,6 +506,12 @@ class m6507 {
         this.PC += this.Instruction.Bytes;
         this.AddressMode = this.AddressingModes[this.Instruction.AddressingMode];
         this.InstructionCycles = this.Instruction.Cycles; // base cycles, instruction may add more
+        if (this.Instruction.Kind == Kind.Undocumented) {
+            //alert("Undocumented");
+        }
+        if (this.beforeExecute) {
+            this.beforeExecute();
+        }
         this.Instructions[this.Instruction.Mnemonic].call(this);
         this.UpdateCycles(this.InstructionCycles);
     }
@@ -648,8 +667,11 @@ class m6507 {
         else {
             var sum = reg + value + carry;
             var result = sum & 0xFF;
+            var sreg = (reg & 0x80) ? reg - 0x100 : reg;
+            var sval = (value & 0x80) ? value - 0x100 : value;
+            var ssum = sreg + sval + carry;
 
-            if (sum > 127) { this.V = 1; } else { this.V = 0; }
+            if (ssum > 127 || ssum < -128) { this.V = 1; } else { this.V = 0; }
             if (sum > 0xFF) { this.C = 1; } else { this.C = 0; }
             if (result === 0) { this.Z = 1; } else { this.Z = 0; }
             if (result & 0x80) { this.N = 1; } else { this.N = 0; }
@@ -1038,8 +1060,11 @@ class m6507 {
         else {
             var difference = reg - borrow - value;
             var result = difference & 0xFF;
+            var sreg = (reg & 0x80) ? reg - 0x100 : reg;
+            var sval = (value & 0x80) ? value - 0x100 : value;
+            var sdiff = sreg - borrow - sval;
 
-            if (difference < -128) { this.V = 1; } else { this.V = 0; }
+            if (sdiff > 127 || sdiff < -128) { this.V = 1; } else { this.V = 0; }
             if (difference >= 0) { this.C = 1; } else { this.C = 0; }
             if (result === 0) { this.Z = 1; } else { this.Z = 0; }
             if (result & 0x80) { this.N = 1; } else { this.N = 0; }
@@ -1117,8 +1142,8 @@ class m6507 {
     public TXS(): void {
         var value = this.X;
         // conflicting info 
-        //if(value & 0x80) { this.N = 1; } else { this.N = 0; }
-        //if(value === 0) { this.Z = 1; } else { this.Z = 0; }
+        //if (value & 0x80) { this.N = 1; } else { this.N = 0; }
+        //if (value === 0) { this.Z = 1; } else { this.Z = 0; }
         this.S = value;
     }
 

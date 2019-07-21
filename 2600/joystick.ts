@@ -1,11 +1,13 @@
-class Joystick {
+export class Joystick {
     public Button: number;
     public Left: number;
     public Up: number;
     public Right: number;
     public Down: number;
+    public Shift: boolean;
 
-    constructor() {
+    constructor(shift: boolean) {
+        this.Shift = shift;
         this.Button = 1;
         this.Left = 1;
         this.Up = 1;
@@ -15,8 +17,7 @@ class Joystick {
 
     public OnKeyDown(event: KeyboardEvent): void {
         var handled: boolean = false;
-
-        if (event) {
+        if (event && !this.Shift || event.shiftKey) {
             var keyCode = event.keyCode;
             switch (keyCode) {
                 case 32:
@@ -58,7 +59,7 @@ class Joystick {
     public OnKeyUp(event: KeyboardEvent): void {
         var handled: boolean = false;
 
-        if (event) {
+        if (event && !this.Shift || event.shiftKey) {
             var keyCode = event.keyCode;
             switch (keyCode) {
                 case 32:
@@ -97,47 +98,47 @@ class Joystick {
         }
     }
 
-    public OnKeyPress(event: KeyboardEvent): void {
-        var handled: boolean = false;
+    // public OnKeyPress(event: KeyboardEvent): void {
+    //     var handled: boolean = false;
 
-        if (event) {
-            var keyCode = event.keyCode;
-            switch (keyCode) {
-                case 32:
-                case 78:
-                    handled = true;
-                    break;
-                case 37:
-                case 75:
-                    handled = true;
-                    break;
-                case 38:
-                case 79:
-                    handled = true;
-                    break;
-                case 39:
-                case 186:
-                    handled = true;
-                    break;
-                case 40:
-                case 76:
-                    handled = true;
-                    break;
-                default:
-                    break;
-            }
+    //     if (event) {
+    //         var keyCode = event.keyCode;
+    //         switch (keyCode) {
+    //             case 32:
+    //             case 78:
+    //                 handled = true;
+    //                 break;
+    //             case 37:
+    //             case 75:
+    //                 handled = true;
+    //                 break;
+    //             case 38:
+    //             case 79:
+    //                 handled = true;
+    //                 break;
+    //             case 39:
+    //             case 186:
+    //                 handled = true;
+    //                 break;
+    //             case 40:
+    //             case 76:
+    //                 handled = true;
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
 
-            if (handled) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-        }
-    }
+    //         if (handled) {
+    //             event.preventDefault();
+    //             event.stopPropagation();
+    //         }
+    //     }
+    // }
 
     public Init(): void {
-        document.addEventListener("keydown", (event: KeyboardEvent) => { this.OnKeyDown(event); }, false);
-        document.addEventListener("keyup", (event: KeyboardEvent) => { this.OnKeyUp(event); }, false);
-        document.addEventListener("keypress", (event: KeyboardEvent) => { this.OnKeyPress(event); }, false);
+        document.addEventListener("keydown", event => { this.OnKeyDown(event); }, false);
+        document.addEventListener("keyup", event => { this.OnKeyUp(event); }, false);
+        //document.addEventListener("keypress", (event: KeyboardEvent) => { this.OnKeyPress(event); }, false);
     }
 
     /* 

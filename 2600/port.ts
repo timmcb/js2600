@@ -12,7 +12,7 @@ Pin Port 0   Port 1   Joystick  Paddle       Keypad
 9   INPT1.7  INPT3.7  unused    RightPaddle  MiddleColumn   
 */
 
-class Port {
+export class Port {
 
     public Device: any;
 
@@ -20,7 +20,7 @@ class Port {
         this.Device = null;
     }
 
-    public Connect(device) {
+    public Connect(device: any) {
         this.Device = device;
     }
 
@@ -28,7 +28,7 @@ class Port {
         this.Device = null;
     }
 
-    public WritePins(pins: number) {
+    public WritePins(pins: number): void {
         if (this.Device) {
             this.Device.WritePins(pins);
         }

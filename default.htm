@@ -46,6 +46,8 @@
 </head>
 <body>
     <h1>js2600 Test Page</h1>
+    <input type="file" id="filePicker" accept=".bin"/>
+    <div id="hash"></div>
     <div>
         anim: <div id="anim"></div>
     </div>
@@ -114,9 +116,31 @@
             }
 
             window.onload = function () {
+                var filePicker = document.getElementById("filePicker");
+                filePicker.addEventListener('change', function (changeEvt) {
+                    var file = filePicker.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function(loadEvt) {
+                        crypto.subtle.digest("SHA-1", reader.result).then(function (digest) {
+                            var digestArray = new Uint8Array(digest);
+                            //document.getElementById("hash").textContent = digestArray.map(function (d) { return d.toString(16); }).join("");
+                            document.getElementById("hash").textContent = Array.prototype.map.call(digestArray, function (d)  { return (('00' + d.toString(16)).slice(-2)); }).join('');
+
+                        });
+
+                         var data = new Uint8Array(reader.result);
+                        //cart = new Cart(data);
+                         cart = new AutoCart(data);
+                        // cart = new E0Cart(data);
+                         processor = new m6507(cart);
+                         Run();
+                    };
+                    reader.readAsArrayBuffer(file); 
+                }, false);
+                var fileList = filePicker.files;
                 animElem = document.getElementById("anim");
                 rateElem = document.getElementById("rate");
-                last = Date.now();
+                xlast = Date.now();
                 Run();
             };
     </script>

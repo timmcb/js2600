@@ -1,7 +1,7 @@
-/// <reference>port.ts</reference>
+import { Port } from "Port";
 /// <reference>switch.ts</reference>
 
-class Riot {
+export class Riot {
     public Port1: Port;
     public Port2: Port;
     public mem: number[];
@@ -15,7 +15,7 @@ class Riot {
     public EINT1NE: number;
     public EINT1PE: number;
     public INTIM: number;
-    public INTFLG: number; //INSTAT
+    public TIMINT: number; //aka INSTAT, INTFLG (Bit 7 is the Timer flag) (Bit 6 is PA7 edge detect)
     public TIM1T: number;
     public TIM8T: number;
     public TIM64T: number;
@@ -32,16 +32,16 @@ class Riot {
         this.mem = new Array(0x80);
         this.switchBank = new Switch();
 
-        this.SWCHA;
-        this.SWACNT;
-        this.SWCHB;
-        this.SWBCNT;
+        this.SWCHA = 0;
+        this.SWACNT = 0;
+        this.SWCHB = 0;
+        this.SWBCNT = 0;
         this.DINT1NE;
         this.DINT1PE;
         this.EINT1NE;
         this.EINT1PE;
         this.INTIM = 0;
-        this.INTFLG = 0; //INSTAT
+        this.TIMINT = 0;  //aka INSTAT, INTFLG
         this.TIM1T = 0;
         this.TIM8T = 0;
         this.TIM64T = 0;
@@ -56,33 +56,33 @@ class Riot {
             this.ReadSWCHB,  //$0282 = (RIOT $02) - Read DRB
             this.ReadSWBCNT, //$0283 = (RIOT $03) - Read DDRB
             this.ReadINTIM,  //$0284 = (RIOT $04) - Read timer, disable interrupt (2)
-            this.ReadINTFLG, //$0285 = (RIOT $05) - Read interrupt flag
+            this.ReadTIMINT, //$0285 = (RIOT $05) - Read interrupt flag
             this.ReadINTIM,  //$0286 = (RIOT $06) - Read timer, disable interrupt (2)
-            this.ReadINTFLG, //$0287 = (RIOT $07) - Read interrupt flag
+            this.ReadTIMINT, //$0287 = (RIOT $07) - Read interrupt flag
             this.ReadSWCHA,  //$0288 = (RIOT $08) - Read DRA
             this.ReadSWACNT, //$0289 = (RIOT $09) - Read DDRA
             this.ReadSWCHB,  //$028A = (RIOT $0A) - Read DRB
             this.ReadSWBCNT, //$028B = (RIOT $0B) - Read DDRB
             this.ReadINTIM,  //$028C = (RIOT $0C) - Read timer, enable interrupt (2)
-            this.ReadINTFLG, //$028D = (RIOT $0D) - Read interrupt flag
+            this.ReadTIMINT, //$028D = (RIOT $0D) - Read interrupt flag
             this.ReadINTIM,  //$028E = (RIOT $0E) - Read timer, enable interrupt (2)
-            this.ReadINTFLG, //$028F = (RIOT $0F) - Read interrupt flag
+            this.ReadTIMINT, //$028F = (RIOT $0F) - Read interrupt flag
             this.ReadSWCHA,  //$0290 = (RIOT $10) - Read DRA
             this.ReadSWACNT, //$0291 = (RIOT $11) - Read DDRA
             this.ReadSWCHB,  //$0292 = (RIOT $12) - Read DRB
             this.ReadSWBCNT, //$0293 = (RIOT $13) - Read DDRB
             this.ReadINTIM,  //$0294 = (RIOT $14) - Read timer, disable interrupt (2)
-            this.ReadINTFLG, //$0295 = (RIOT $15) - Read interrupt flag
+            this.ReadTIMINT, //$0295 = (RIOT $15) - Read interrupt flag
             this.ReadINTIM,  //$0296 = (RIOT $16) - Read timer, disable interrupt (2)
-            this.ReadINTFLG, //$0297 = (RIOT $17) - Read interrupt flag
+            this.ReadTIMINT, //$0297 = (RIOT $17) - Read interrupt flag
             this.ReadSWCHA,  //$0298 = (RIOT $18) - Read DRA
             this.ReadSWACNT, //$0299 = (RIOT $19) - Read DDRA
             this.ReadSWCHB,  //$029A = (RIOT $1A) - Read DRB
             this.ReadSWBCNT, //$029B = (RIOT $1B) - Read DDRB
             this.ReadINTIM,  //$029C = (RIOT $1C) - Read timer, enable interrupt (2)
-            this.ReadINTFLG, //$029D = (RIOT $1D) - Read interrupt flag
+            this.ReadTIMINT, //$029D = (RIOT $1D) - Read interrupt flag
             this.ReadINTIM,  //$029E = (RIOT $1E) - Read timer, enable interrupt (2)
-            this.ReadINTFLG  //$029F = (RIOT $1F) - Read interrupt flag
+            this.ReadTIMINT  //$029F = (RIOT $1F) - Read interrupt flag
         ];
 
         this.WriteMap = [
@@ -119,6 +119,9 @@ class Riot {
             this.WriteTIM64T,   //$029E = (RIOT $1E) - Write timer (div by 64)   - enable int (2)
             this.WriteTIM1024T  //$029F = (RIOT $1F) - Write timer (div by 1024) - enable int (2)
         ];
+
+        // Init the timer in 1024 mode
+        //this.WriteTIM1024T(0x0297, (Math.random() * 0xFF) & 0xFF);
     }
 
     /* 
@@ -135,16 +138,13 @@ class Riot {
     9   INPT1.7  INPT3.7  -          <Pot 1      <Column 1   
     */
     public ReadSWCHA(address: number) {
-        var value: number,
-            pins1: number = this.Port1.ReadPins() & 0x00F,
-            pins2: number = this.Port2.ReadPins() & 0x00F,
-            portin: number = (pins1 << 4) | pins2,
-            ddra: number = this.SWACNT,
-            output: number = this.SWCHA & ddra,
-            input: number = (portin & (~ddra)) & 0xFF;
-
-        value = output | input;
-
+        const ddra = this.SWACNT; // all pins are writable
+        const pins1 = this.Port1.ReadPins() & 0x00F;
+        const pins2 = this.Port2.ReadPins() & 0x00F;
+        const portin = (pins1 << 4) | pins2;
+        const input = portin & ~ddra;
+        const output = this.SWCHA & ddra;
+        const value = output | input;
         return value;
     }
 
@@ -153,13 +153,10 @@ class Riot {
     }
 
     public ReadSWCHB(address: number): number {
-        var value: number,
-            ddrb: number = this.SWBCNT,
-            output: number = this.SWCHB & ddrb,
-            input: number = (this.switchBank.ReadByte(address) & (~ddrb)) & 0xFF;
-
-        value = output | input;
-
+        const ddrb = this.SWBCNT & 0x34; // D2,D4,D5 are writable
+        const input = this.switchBank.ReadByte(address) & ~ddrb; // 0 is on
+        const output = this.SWCHB & ddrb; 
+        const value = input | output;
         return value;
     }
 
@@ -168,15 +165,18 @@ class Riot {
     }
 
     public ReadINTIM(address: number): number {
+        this.TIMINT &= 0x7F; // Clear Timer Flag (bit 7)
         return this.INTIM;
     }
 
-    public ReadINTFLG(address: number): number {
-        return this.INTFLG;
-        this.INTFLG = this.INTFLG & 0xBF;
+    public ReadTIMINT(address: number): number {
+        const flag = this.TIMINT;
+        this.TIMINT &= 0xBF; // Clear PA7 Edge detect (bit 6)
+        return flag;
     }
 
     public WriteSWCHA(address: number, value: number) {
+        // The switch bits are writable when set to output
         this.SWCHA = value & this.SWACNT;
     }
 
@@ -185,7 +185,9 @@ class Riot {
     }
 
     public WriteSWCHB(address: number, value: number) {
-        this.SWCHB = value & this.SWBCNT;
+        // The switch bits are hard wired for read
+        // The rest of the bits are writable
+        this.SWCHB = value & this.SWBCNT & 0x34; // only D2,D4,D5 are writable
     }
 
     public WriteSWBCNT(address: number, value: number) {
@@ -211,39 +213,46 @@ class Riot {
     public WriteTIM1T(address: number, value: number): void {
         this.TIM1T = value;
         this.INTIM = value;
-        this.INTFLG = 0;
+        this.TIMINT &= 0x7F; // Clear Timer Flag (bit 7)
         this.shift = 0;
         this.counter = (value << this.shift) | 0x0;
+        this.bcounter = 0;
     }
 
     public WriteTIM8T(address: number, value: number): void {
         this.TIM8T = value;
         this.INTIM = value;
-        this.INTFLG = 0;
+        this.TIMINT &= 0x7F; // Clear Timer Flag (bit 7)
         this.shift = 3;
         this.counter = value << 3 | 0x7;
+        this.bcounter = 0;
     }
 
     public WriteTIM64T(address: number, value: number): void {
         this.TIM64T = value;
         this.INTIM = value;
-        this.INTFLG = 0;
+        this.TIMINT &= 0x7F; // Clear Timer Flag (bit 7)
         this.shift = 6;
         this.counter = (value << this.shift) | 0x3F;
+        this.bcounter = 0;
     }
 
     public WriteTIM1024T(address: number, value: number): void {
         this.T1024T = value;
         this.INTIM = value;
-        this.INTFLG = 0;
+        this.TIMINT &= 0x7F; // Clear Timer Flag (bit 7)
         this.shift = 10;
         this.counter = (value << this.shift) | 0x3FF;
+        this.bcounter = 0;
     }
 
     public Init(): void {
         var index: number = 0x7F;
         while (index--) {
-            this.mem[index] = 0;
+            // Zero mem
+            //this.mem[index] = 0;
+            // or Randomize
+            this.mem[index] = (Math.random() * 0xFF) & 0xFF;
         }
         this.switchBank.Init();
     }
@@ -259,11 +268,13 @@ class Riot {
                 cycles -= this.counter;
                 this.INTIM = 0;
                 this.counter = 0;
-                this.INTFLG = 0xC0;
                 this.bcounter = 0x100;
             }
         }
         if (cycles > 0 && this.bcounter > 0) {
+            if (this.bcounter === 0x100) {
+                this.TIMINT |= 0x80; // Set timer flag (bit 7)
+            }
             if (this.bcounter > cycles) {
                 this.bcounter -= cycles;
                 this.INTIM = this.bcounter;
@@ -296,4 +307,3 @@ class Riot {
         }
     }
 }
-

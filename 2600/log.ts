@@ -1,12 +1,17 @@
-function Log() {
-    this.Lines = new Array();
-    this.Line = null;
-    this.Text = null;
-}
+export class Log {
+    public readonly Lines: string[];
+    public Line: string;
+    public Text: string;
+    
+    constructor() {
+        this.Lines = new Array();
+        this.Line = null;
+        this.Text = null;
+    }
 
-Log.prototype.Write(text) {
+    public Write(text: string): void {
         if (!text) {
-            text = new String();
+            text = "";
         }
         var line = this.Line
         if (line) {
@@ -18,9 +23,9 @@ Log.prototype.Write(text) {
         this.Text = null;
     }
 
-Log.prototype.WriteLine(text) {
+    public WriteLine(text: string): void {
         if (!text) {
-            text = new String();
+            text = "";
         }
         var line = this.Line
         if (line) {
@@ -34,9 +39,9 @@ Log.prototype.WriteLine(text) {
         this.Text = null;
     }
 
-Log.prototype.toString() {
+    public toString(): string {
         if (!this.Text) {
-            this.Text = new String();
+            this.Text = "";
 
             if (this.Line) {
                 this.Lines.push(this.Line);
@@ -50,3 +55,4 @@ Log.prototype.toString() {
         }
         return this.Text;
     }
+}

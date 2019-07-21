@@ -1,45 +1,44 @@
-/// <reference>port.ts</reference>
-/// <reference>joystick.ts</reference>
-/// <reference>cart.ts</reference>
-/// <reference>riot.ts</reference>
+import * as Cart from "Cart";
+import * as Games from "Adventure";
+import { Joystick } from "Joystick";
 
-function GetCart(gameid)
+export function GetCart(gameid: number)
 {
-    var ct = new Cart(ColorBar());
+    var ct = new Cart.Cart(Games.ColorBar());
 
     switch (gameid)
     {
         case 1:
-            ct = new Cart(DonkeyKong());
+            ct = new Cart.Cart(Games.DonkeyKong());
             break;
         case 2:
-            ct = new F8Cart(Asteroids());
+            ct = new Cart.F8Cart(Games.Asteroids());
             break;
         case 3:
-            ct = new Cart(Superman());
+            ct = new Cart.Cart(Games.Superman());
             break;
         case 4:
-            ct = new Cart(MissleCommand());
+            ct = new Cart.Cart(Games.MissleCommand());
             break;
         case 5:
             break;
         case 6:
-            ct = new F8Cart(MsPacMan());
+            ct = new Cart.F8Cart(Games.MsPacMan());
             break;
         case 7:
-            ct = new Cart(Adventure());
+            ct = new Cart.Cart(Games.Adventure());
             break;
         case 8:
-            ct = new Cart(SpaceInvaders());
+            ct = new Cart.Cart(Games.SpaceInvaders());
             break;
         case 9:
-            ct = new F8Cart(Battlezone()); 
+            ct = new Cart.F8Cart(Games.Battlezone()); 
             break;
         case 10:
-            ct = new F8SuperChipCart(Defender2());
+            ct = new Cart.F8SuperChipCart(Games.Defender2());
             break;
         case 11:
-            ct = new Cart2K(Combat());
+            ct = new Cart.Cart2K(Games.Combat());
             break;
         default:
            break;
@@ -78,10 +77,12 @@ class Memory {
     constructor(theCart: any) {
         this.Port1 = new Port();
         this.Port2 = new Port();
-        this.joy1 = new Joystick();
+        this.joy1 = new Joystick(false);
         this.joy1.Init();
         this.Port1.Connect(this.joy1);
-        //this.Port2.Connect(this.joy1);
+        this.joy2 = new Joystick(true);
+        this.joy2.Init();
+        this.Port2.Connect(this.joy2);
         this.tia = new TIA(this.Port1, this.Port2);
         this.tia.Init();
         this.riot = new Riot(this.Port1, this.Port2);

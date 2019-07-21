@@ -1,5 +1,5 @@
 
-function AssemblyTokenizerFile(file) {
+export function AssemblyTokenizerFile(file) {
     this.File = file;
     this.Position = 0;
 
@@ -46,7 +46,7 @@ function AssemblyTokenizerFile(file) {
     }
 }
 
-function AssemblyTokenizer() {
+export function AssemblyTokenizer() {
 
     this.TokenTypes = {
         Whitespace : 0,
@@ -241,7 +241,7 @@ function AssemblyTokenizer() {
     }
 }
 
-function AssemblyParser() {
+export function AssemblyParser() {
 
     this.Tokenizer = null;
 
@@ -364,8 +364,7 @@ function AssemblyParser() {
     this.ParseORG
 }
 
-
-function Assembler() {
+export function Assembler() {
     this.Bin = null;
     this.Sym = null;
     this.Asm = null;

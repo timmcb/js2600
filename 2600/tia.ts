@@ -1,7 +1,7 @@
-/// <reference>Port.ts</reference>
-/// <reference>Sound.ts</reference>
+import { Port } from "Port";
+import { Sound } from "Sound";
 
-class RGB {
+export class RGB {
     public R: number;
     public G: number;
     public B: number;
@@ -13,7 +13,7 @@ class RGB {
     }
 }
 
-class TIA {
+export class TIA {
     private Port1: Port;
     private Port2: Port;
 
@@ -148,7 +148,7 @@ class TIA {
 
     private ColorMap: RGB[];
 
-    constructor(port1, port2) {
+    constructor(port1: Port, port2: Port) {
         this.Port1 = port1;
         this.Port2 = port2;
 
@@ -525,8 +525,8 @@ class TIA {
     }
 
     public Init(): void {
+    
     }
-
 
     public Step(cycles: number): number {
         var addCycles = 0;
@@ -641,7 +641,7 @@ class TIA {
                     //this.Context.webkitImageSmoothingEnabled = false;
                     //this.Context.scale(4, 3);
                     this.Image = this.Context.getImageData(0, 0, screen.width, screen.height);
-                    this.Data = this.Image.data;
+                    this.Data = <number[]><any>this.Image.data;
 
                     for (var i = 0; i < this.Data.length; i++) {
                         this.Data[i] = 0xFF;
@@ -896,25 +896,16 @@ class TIA {
             }
         }
 
-        if (pfPriority && pf) {
+        if (pfPriority && (pf || bl)) {
             return pfColor;
         }
-        else if (p0) {
+        else if (p0 || m0) {
             return this.COLUP0;
         }
-        else if (m0) {
-            return this.COLUP0;
-        }
-        else if (p1) {
+        else if (p1 || m1) {
             return this.COLUP1;
         }
-        else if (m1) {
-            return this.COLUP1;
-        }
-        else if (bl) {
-            return pfColor;
-        }
-        else if (!pfPriority && pf) {
+        else if (!pfPriority && (pf || bl)) {
             return pfColor;
         }
         else {
@@ -1279,12 +1270,23 @@ class TIA {
         var xM1 = this.HMIS1 - dxM1;
         var xBL = this.HBALL - dxBL;
 
+        if (xP0 < 60) { xP0 += 160 }
+        if (xP1 < 60) { xP1 += 160 }
+        if (xM0 < 60) { xM0 += 160 }
+        if (xM1 < 60) { xM1 += 160 }
+        if (xBL < 60) { xBL += 160 }
+        if (xP0 >= 236) { xP0 -= 160 }
+        if (xP1 >= 236) { xP1 -= 160 }
+        if (xM0 >= 236) { xM0 -= 160 }
+        if (xM1 >= 236) { xM1 -= 160 }
+        if (xBL >= 236) { xBL -= 160 }
+        
         // store the positions
-        this.HP0 = xP0;
-        this.HP1 = xP1;
-        this.HMIS0 = xM0;
-        this.HMIS1 = xM1;
-        this.HBALL = xBL;
+        this.HP0 = xP0 & 0xFF;
+        this.HP1 = xP1 & 0xFF;
+        this.HMIS0 = xM0 & 0xFF;
+        this.HMIS1 = xM1 & 0xFF;
+        this.HBALL = xBL & 0xFF;
     }
 
     // HMCLR   <strobe>  clear horizontal motion registers
